@@ -1,97 +1,125 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Daily Fetal Movement (DFM) Tracker
 
-# Getting Started
+A simple **offline-first React Native application** to help users record and track daily fetal movements (kick counts).
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+This project was built as part of a **React Native Developer Intern assignment** to demonstrate app structure, local data handling, and clean UI logic without using any backend.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Features
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- Record time taken to feel **10 fetal movements**
+- Explicit session lifecycle:
+  - Start
+  - Stop
+  - Save
+  - Discard with confirmation
+- Save sessions locally on the device
+- View previously saved sessions on the Home screen
+- Information bottom sheet explaining how to track fetal movements
+- Data persists even after app restart
+- Fully offline (no backend)
 
-```sh
-# Using npm
+---
+
+## Screenshots
+
+| Home Screen | Start Recording | Recording |
+|------------|----------------|-----------|
+| <img src="https://github.com/user-attachments/assets/571d4a6e-311c-45c4-808b-6eed609b8e0a" width="200"/> | <img src="https://github.com/user-attachments/assets/706d9ed9-e0cc-4065-a6df-6e53121aea22" width="200"/> | <img src="https://github.com/user-attachments/assets/70f7bbfe-b151-48d5-bcf5-e8658608c5fa" width="200"/> |
+
+| Save Confirmation | Session Too Short | Discard Session |
+|------------------|------------------|----------------|
+| <img src="https://github.com/user-attachments/assets/70fc4ba4-66ed-424b-b4d9-02a55aba8558" width="200"/> | <img src="https://github.com/user-attachments/assets/c275f652-92b2-4779-8755-d555366ddca7" width="200"/> | <img src="https://github.com/user-attachments/assets/9b58e234-f48f-44c4-83b4-92ffdfaa316a" width="200"/> |
+
+| Information Sheet |
+|------------------|
+| <img src="https://github.com/user-attachments/assets/82c58a49-fdd8-4178-94c3-904b548354ff" width="200"/> |
+
+---
+
+## Screen Recording
+
+A short screen recording demonstrating the complete app flow:
+- Starting a fetal movement recording
+- Timer behavior
+- Save confirmation
+- Validation for short sessions
+- Discard confirmation
+- Viewing saved records on the Home screen
+- Information bottom sheet
+
+**Watch the recording here:**  
+[Google Drive – Screen Recording](https://drive.google.com/file/d/1ZDAE_Ygd4E0ew764mQV1RVJPBetmK6Iw/view?usp=sharing)
+
+---
+
+## Tech Stack & Libraries Used
+
+- **React Native (CLI)** – core framework
+- **TypeScript** – type safety and maintainability
+- **@react-navigation/native & native-stack** – screen navigation
+- **@gorhom/bottom-sheet** – information sheet UI
+- **@react-native-async-storage/async-storage** – local persistence
+- **react-native-svg** – SVG icons
+- **react-native-linear-gradient** – UI gradients
+- **react-native-reanimated & react-native-gesture-handler** – animations and gestures
+
+---
+
+## Project Structure
+
+The project follows a **feature-first structure** to keep UI, state, and storage logic organized and scalable.
+```
+src/
+├── app/
+│   └── navigation/
+│       └── AppNavigator.tsx              # Navigation configuration
+│
+├── features/
+│   └── dfm/
+│       ├── components/                   # Reusable UI components
+│       │   ├── InfoSheet.tsx            # Bottom sheet with instructions
+│       │   ├── RecordItem.tsx           # Individual record display
+│       │   └── TimerDisplay.tsx         # Timer formatting component
+│       ├── constants/                    # App-level constants (kick target, min duration)
+│       ├── model/
+│       │   └── DfmRecord.ts             # Data model interface
+│       ├── storage/
+│       │   └── DfmStorage.ts            # AsyncStorage persistence logic
+│       ├── viewmodel/                    # Screen-specific state & logic
+│       │   ├── HomeViewModel.ts         # Home screen business logic
+│       │   └── RecordDfmViewModel.ts    # Timer & recording logic
+│       └── views/                        # Screen components
+│           ├── HomeScreen.tsx           # Main list screen
+│           └── RecordDfmScreen.tsx      # Timer/tracking screen
+│
+├── shared/
+│   ├── storage/
+│   │   └── StorageKeys.ts               # Shared storage keys
+│   └── utils/
+│       └── timeFormatter.ts             # Utility helpers (time formatting)
+│
+└── App.tsx                               # Root component
+```
+
+---
+
+## How to Run the Project
+
+### Prerequisites
+- Node.js `>= 20`
+- Android Studio (with emulator) **or** physical Android device
+- React Native CLI environment set up
+
+### Steps
+
+```bash
+# Install dependencies
+npm install
+
+# Start Metro bundler
 npm start
 
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+# Run on Android
 npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
