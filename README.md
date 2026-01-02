@@ -105,6 +105,48 @@ src/
 
 ---
 
+## Data Storage Structure
+
+All fetal movement sessions are stored locally using AsyncStorage.
+
+### Record Model
+```typescript
+interface DfmRecord {
+  id: string;                 // Unique session identifier
+  startedAt: number;          // Epoch timestamp (milliseconds)
+  durationSeconds: number;    // Time taken for 10 kicks (in seconds)
+}
+```
+
+### Storage Shape
+```json
+{
+  "version": 1,
+  "records": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "startedAt": 1704196800000,
+      "durationSeconds": 420
+    }
+  ]
+}
+```
+
+### Design Decisions
+- Session duration is stored in seconds for accuracy
+- Time formatting (`mm:ss` or minutes) is handled only in the UI
+- Storage is versioned to support future schema changes
+
+## Assumptions
+
+- A session is considered valid only if it lasts at least 1 minute
+- The fetal movement target is fixed at 10 kicks
+- In-progress sessions are not persisted if the app is closed
+- All data is stored locally, no backend or cloud sync is used
+- Article card, bookmark button, and header badge are static since no behavior was specified
+
+---
+
 ## How to Run the Project
 
 ### Prerequisites
